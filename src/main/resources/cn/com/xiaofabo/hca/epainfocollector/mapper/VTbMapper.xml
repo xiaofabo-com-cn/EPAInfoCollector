@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.xiaofabo.hca.epainfocollector.mapper.VTBMapper">
+
+  <insert id="batchInsertUrl" parameterType="java.util.List">
+    insert into
+    tb_crawl_url (start_url,title, url,post_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.startUrl},#{item.title},#{item.url},#{item.postTime})
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    title = values(title),
+    post_time = values(post_time)
+  </insert>
+
+  <insert id="batchInsertContent" parameterType="java.util.List">
+    insert into
+    tb_crawl_content (start_url,title, body_content,body_file_name,body_file_url)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.startUrl},#{item.title},#{item.bodyContent},#{item.bodyFileName}, #{item.bodyFileUrl})
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    title = values(title),
+    body_content = values(body_content),
+    body_file_name = values(body_file_name),
+    body_file_url = values(body_file_url)
+  </insert>
+
+  <select id="urlList" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.req.CrawlUrlReq"
+          resultType="cn.com.xiaofabo.hca.epainfocollector.entity.resp.CrawlUrlResp">
+    select
+      r.channel channel,
+      u.id id,
+      u.start_url startUrl,
+      u.post_time postTime,
+      u.title title,
+      u.url url
+    from tb_crawl_url u
+    left join tb_crawl_rule r on u.start_url = r.start_url
+    where 1=1
+    <if test="crawlUrlReq != null">
+      <if test="crawlUrlReq.channel != null and crawlUrlReq.channel != ''">
+        and channel = #{crawlUrlReq.channel}
+      </if>
+      <if test="crawlUrlReq.postTime != null and crawlUrlReq.postTime != ''">
+        and postTime = #{crawlUrlReq.postTime}
+      </if>
+      <if test="crawlUrlReq.title != null and crawlUrlReq.title != ''">
+        and title like concat('%',#{crawlUrlReq.title},'%')
+      </if>
+    </if>
+  </select>
+
+</mapper>

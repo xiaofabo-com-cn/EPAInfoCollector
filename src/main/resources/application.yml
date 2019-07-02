@@ -1,0 +1,45 @@
+server:
+  port: 8080
+  compression:
+    enabled: true
+  connection-timeout: 3000
+
+debug: false
+
+##登录记住我的token加密key
+remember:
+  key: yintong
+
+##actuator config,actuator运行在一个独立的webappcontext中，see AnnotationConfigEmbeddedWebApplicationContext
+management:
+  context-path: /management
+  security:
+    enabled: false
+
+spring:
+  application:
+    name: admin
+  datasource:
+    url: jdbc:mysql://10.0.3.10:3306/test?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+    username: kai1818
+    password: ibm@touna.cn#123.ck&
+    driver-class-name: com.mysql.jdbc.Driver
+  cache:
+    guava:
+      spec: maximumSize=500,expireAfterAccess=3600s
+
+  #spring-boot-admin config
+  boot:
+    admin:
+      url: http://localhost:${server.port}${spring.boot.admin.context-path}
+      context-path: /admin
+      client:
+        enabled: true
+  thymeleaf:
+    prefix: classpath:/public/thymeleaf/
+
+  mail:
+    host: smtp.qq.com
+    username: 718586216@qq.com
+    password: xxxxxxxxxxxx
+    default-encoding: UTF-8

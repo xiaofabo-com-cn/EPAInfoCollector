@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="head"></div>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css"/>
+    <title>数据列表</title>
+</head>
+<script type="text/javascript">
+	function check(){
+		var r=confirm("确定要删除吗？");
+		if (r==true){
+			return true;
+		}else{
+			return false;
+		}
+	}
+</script>
+
+<body class="hold-transition skin-blue sidebar-mini ">
+<div class="wrapper">
+
+    <div th:replace="header"></div>
+    <div th:replace="sidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+
+                    <div class="box">
+                        <div class="box-header">
+                            <a th:href="@{/user/form}" title="新增帐号"><span class="glyphicon glyphicon-plus"></span></a>
+                        </div>
+
+                        <div class="box-body">
+                            <table id="dataTable" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>渠道</th>
+                                    <th>发布时间</th>
+                                    <th>标题</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item:${list}">
+                                    <td th:text="${item.channel}"></td>
+                                    <td th:text="${item.postTime}"></td>
+                                    <td><a th:text="${item.title}" th:href="@{/business/{id}/detail(id=${item.id})}"></a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+
+</div>
+
+<div th:replace="script"></div>
+
+<!-- page script -->
+<script>
+    $(function () {
+        $('#dataTable').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
+        });
+    });
+</script>
+<script th:src="@{/js/list-page.js}"></script>
+</body>
+</html>
