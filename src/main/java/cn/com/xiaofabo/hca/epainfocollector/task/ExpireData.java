@@ -1,7 +1,7 @@
 package cn.com.xiaofabo.hca.epainfocollector.task;
 
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlDict;
-import cn.com.xiaofabo.hca.epainfocollector.service.CrawService;
+import cn.com.xiaofabo.hca.epainfocollector.mail.MailService;
 import cn.com.xiaofabo.hca.epainfocollector.service.PersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.Trigger;
@@ -18,31 +18,31 @@ import java.util.List;
 
 @Component
 @EnableScheduling
-public class CrawEngine implements SchedulingConfigurer {
+public class ExpireData implements SchedulingConfigurer {
 
-	public static final String DICT_KEY = "craw-cron";
+	public static final String DICT_EXPIRE_DAY_KEY = "data-expire-day";
 
-	public static String crawCron;
+	public static final String DICT_EXPIRE_CRON_KEY = "data-expire-cron";
+
+	public static String expireCron;
 
 	@Autowired
 	PersistenceService persistenceService;
-	@Autowired
-	CrawService crawService;
 
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
 		//项目部署时，会在这里执行一次，从数据库拿到cron表达式
-		List<TbCrawlDict> dicts = persistenceService.getDictByKey(DICT_KEY);
+		List<TbCrawlDict> dicts = persistenceService.getDictByKey(DICT_EXPIRE_CRON_KEY);
 		if (CollectionUtils.isEmpty(dicts)){
 			return;
 		}
-		crawCron = dicts.parallelStream().findFirst().get().getdValue();
+		expireCron = dicts.parallelStream().findFirst().get().getdValue();
 
 		Runnable task = new Runnable() {
 			@Override
 			public void run() {
 				//任务逻辑代码部分.
-				crawService.runTask();
+				persistenceService.deleteExpireData();
 			}
 		};
 		Trigger trigger = new Trigger() {
@@ -50,11 +50,11 @@ public class CrawEngine implements SchedulingConfigurer {
 			public Date nextExecutionTime(TriggerContext triggerContext) {
 				//任务触发，可修改任务的执行周期.
 				//每一次任务触发，都会执行这里的方法一次，重新获取下一次的执行时间
-				List<TbCrawlDict> dicts = persistenceService.getDictByKey(DICT_KEY);
+				List<TbCrawlDict> dicts = persistenceService.getDictByKey(DICT_EXPIRE_CRON_KEY);
 				if (!CollectionUtils.isEmpty(dicts)){
-					crawCron = dicts.parallelStream().findFirst().get().getdValue();
+					expireCron = dicts.parallelStream().findFirst().get().getdValue();
 				}
-				CronTrigger trigger = new CronTrigger(crawCron);
+				CronTrigger trigger = new CronTrigger(expireCron);
 				Date nextExec = trigger.nextExecutionTime(triggerContext);
 				return nextExec;
 			}

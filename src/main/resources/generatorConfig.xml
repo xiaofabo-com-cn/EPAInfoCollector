@@ -42,7 +42,7 @@
         </javaClientGenerator>
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="tb_crawl_dict" />
+        <table tableName="tb_crawl_content" />
 
     </context>
 </generatorConfiguration>

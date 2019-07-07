@@ -1,6 +1,7 @@
 package cn.com.xiaofabo.hca.epainfocollector.task;
 
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlDict;
+import cn.com.xiaofabo.hca.epainfocollector.mail.MailService;
 import cn.com.xiaofabo.hca.epainfocollector.service.CrawService;
 import cn.com.xiaofabo.hca.epainfocollector.service.PersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,19 @@ import java.util.List;
 
 @Component
 @EnableScheduling
-public class CrawEngine implements SchedulingConfigurer {
+public class EmailSend implements SchedulingConfigurer {
 
-	public static final String DICT_KEY = "craw-cron";
+	public static final String DICT_KEY = "mail-send-time";
 
-	public static String crawCron;
+
+
+	public static String emailSendCron;
 
 	@Autowired
 	PersistenceService persistenceService;
+
 	@Autowired
-	CrawService crawService;
+	MailService mailService;
 
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
@@ -36,13 +40,13 @@ public class CrawEngine implements SchedulingConfigurer {
 		if (CollectionUtils.isEmpty(dicts)){
 			return;
 		}
-		crawCron = dicts.parallelStream().findFirst().get().getdValue();
+		emailSendCron = dicts.parallelStream().findFirst().get().getdValue();
 
 		Runnable task = new Runnable() {
 			@Override
 			public void run() {
 				//任务逻辑代码部分.
-				crawService.runTask();
+				mailService.sendMailTask();
 			}
 		};
 		Trigger trigger = new Trigger() {
@@ -52,9 +56,9 @@ public class CrawEngine implements SchedulingConfigurer {
 				//每一次任务触发，都会执行这里的方法一次，重新获取下一次的执行时间
 				List<TbCrawlDict> dicts = persistenceService.getDictByKey(DICT_KEY);
 				if (!CollectionUtils.isEmpty(dicts)){
-					crawCron = dicts.parallelStream().findFirst().get().getdValue();
+					emailSendCron = dicts.parallelStream().findFirst().get().getdValue();
 				}
-				CronTrigger trigger = new CronTrigger(crawCron);
+				CronTrigger trigger = new CronTrigger(emailSendCron);
 				Date nextExec = trigger.nextExecutionTime(triggerContext);
 				return nextExec;
 			}

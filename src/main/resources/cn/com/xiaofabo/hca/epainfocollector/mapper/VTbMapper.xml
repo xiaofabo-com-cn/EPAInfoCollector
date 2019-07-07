@@ -16,16 +16,14 @@
 
   <insert id="batchInsertContent" parameterType="java.util.List">
     insert into
-    tb_crawl_content (start_url,title, body_content,body_file_name,body_file_url)
+    tb_crawl_content (start_url,title, body_content)
     values
     <foreach collection="list" item="item" index="index" separator=",">
-      (#{item.startUrl},#{item.title},#{item.bodyContent},#{item.bodyFileName}, #{item.bodyFileUrl})
+      (#{item.startUrl},#{item.title},#{item.bodyContent})
     </foreach>
     ON DUPLICATE KEY UPDATE
     title = values(title),
-    body_content = values(body_content),
-    body_file_name = values(body_file_name),
-    body_file_url = values(body_file_url)
+    body_content = values(body_content)
   </insert>
 
   <select id="urlList" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.req.CrawlUrlReq"
@@ -51,6 +49,73 @@
         and title like concat('%',#{crawlUrlReq.title},'%')
       </if>
     </if>
+    order by u.post_time desc
+  </select>
+
+  <select id="countCollect" resultType="java.lang.Integer">
+    select
+      count(1)
+    from tb_crawl_content u
+    where 1=1
+    <if test="startTime != null and startTime != ''">
+        <![CDATA[
+          and create_time >= #{startTime} and create_time <= NOW()
+        ]]>
+    </if>
+  </select>
+
+  <insert id="batchInsertFile" parameterType="java.util.List">
+    insert into
+    tb_crawl_file (start_url,file_name, file_md5, file_url)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.startUrl},#{item.fileName},#{item.fileMd5},#{item.fileUrl})
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    file_name = values(file_name),
+    file_md5 = values(file_md5),
+    file_url = values(file_url)
+  </insert>
+
+  <select id="selectExpireFile" resultType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlFile">
+    select
+      f.id id,
+      f.start_url startUrl,
+      f.file_name fileName,
+      f.file_md5 fileMd5,
+      f.file_url fileUrl
+    from tb_crawl_file f
+    where DATEDIFF(NOW(),f.create_time) >= #{expireDay}
+  </select>
+
+  <delete id="deleteExpireUrl">
+    delete
+    from tb_crawl_url
+    where DATEDIFF(NOW(),create_time) >= #{expireDay}
+  </delete>
+
+  <delete id="deleteExpireContent">
+    delete
+    from tb_crawl_content
+    where DATEDIFF(NOW(),create_time) >= #{expireDay}
+  </delete>
+
+  <delete id="deleteExpireFile">
+    delete
+    from tb_crawl_file
+    where DATEDIFF(NOW(),create_time) >= #{expireDay}
+  </delete>
+
+  <select id="queryFileByUrl" resultType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlFile">
+    select
+      f.id id,
+      f.start_url startUrl,
+      f.file_name fileName,
+      f.file_md5 fileMd5,
+      f.file_url fileUrl
+    from tb_crawl_file f
+    where f.file_url like concat('%',#{fileUrl})
+    limit 1
   </select>
 
 </mapper>

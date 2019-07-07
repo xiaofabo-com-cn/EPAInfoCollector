@@ -32,7 +32,7 @@ public class LocalCache {
 		}
 	}
 
-	public static LinkedHashMap<String, Object> getBaoZhiCacheMap() {
+	public static LinkedHashMap<String, Object> getCacheMap() {
 		return localCacheMap;
 	}
 }

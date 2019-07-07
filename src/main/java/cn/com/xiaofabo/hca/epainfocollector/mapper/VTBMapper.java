@@ -1,6 +1,7 @@
 package cn.com.xiaofabo.hca.epainfocollector.mapper;
 
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent;
+import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlFile;
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlUrl;
 import cn.com.xiaofabo.hca.epainfocollector.entity.req.CrawlUrlReq;
 import cn.com.xiaofabo.hca.epainfocollector.entity.resp.CrawlUrlResp;
@@ -16,5 +17,17 @@ public interface VTBMapper {
 
     List<CrawlUrlResp> urlList(@Param("crawlUrlReq") CrawlUrlReq crawlUrlReq);
 
-    TbCrawlContent urlDetail(@Param("startUrl") String startUrl);
+    Integer countCollect(@Param("startTime")String startTime);
+
+    Integer batchInsertFile(List<TbCrawlFile> list);
+
+    List<TbCrawlFile> selectExpireFile(@Param("expireDay")Integer expireDay);
+
+    void deleteExpireUrl(@Param("expireDay")Integer expireDay);
+
+    void deleteExpireContent(@Param("expireDay")Integer expireDay);
+
+    void deleteExpireFile(@Param("expireDay")Integer expireDay);
+
+    TbCrawlFile queryFileByUrl(@Param("fileUrl")String fileUrl);
 }

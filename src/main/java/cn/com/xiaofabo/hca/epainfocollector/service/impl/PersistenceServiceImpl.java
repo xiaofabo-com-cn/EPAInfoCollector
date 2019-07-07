@@ -6,8 +6,11 @@ import cn.com.xiaofabo.hca.epainfocollector.entity.req.CrawlUrlReq;
 import cn.com.xiaofabo.hca.epainfocollector.entity.resp.CrawlUrlResp;
 import cn.com.xiaofabo.hca.epainfocollector.mapper.*;
 import cn.com.xiaofabo.hca.epainfocollector.service.PersistenceService;
+import cn.com.xiaofabo.hca.epainfocollector.task.ExpireData;
+import cn.com.xiaofabo.hca.epainfocollector.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -24,11 +27,15 @@ public class PersistenceServiceImpl implements PersistenceService {
     TbCrawlContentMapper tbCrawlContentMapper;
     @Autowired
     TbCrawlDictMapper tbCrawlDictMapper;
+    @Autowired
+    TbCrawlFileMapper tbCrawlFileMapper;
 
     @Override
-    public List<TbCrawlRule> getAllCrawRule() {
+    public List<TbCrawlRule> getAllCrawRule(boolean hasCondition) {
         TbCrawlRuleExample tbCrawlRuleExample = new TbCrawlRuleExample();
-        tbCrawlRuleExample.createCriteria().andIsDeleteEqualTo(Constant.DELETE_NO);
+        if (hasCondition){
+            tbCrawlRuleExample.createCriteria().andIsDeleteEqualTo(Constant.DELETE_NO);
+        }
         return tbCrawlRuleMapper.selectByExample(tbCrawlRuleExample);
     }
 
@@ -51,7 +58,11 @@ public class PersistenceServiceImpl implements PersistenceService {
     public TbCrawlContent urlDetail(String url) {
         TbCrawlContentExample tbCrawlContentExample = new TbCrawlContentExample();
         tbCrawlContentExample.createCriteria().andStartUrlEqualTo(url);
-        return tbCrawlContentMapper.selectByExampleWithBLOBs(tbCrawlContentExample).parallelStream().findFirst().get();
+        List<TbCrawlContent> tbCrawlContentList = tbCrawlContentMapper.selectByExampleWithBLOBs(tbCrawlContentExample);
+        if (CollectionUtils.isEmpty(tbCrawlContentList)){
+            return null;
+        }
+        return tbCrawlContentList.parallelStream().findFirst().get();
     }
 
     @Override
@@ -75,5 +86,72 @@ public class PersistenceServiceImpl implements PersistenceService {
         }
     }
 
+    @Override
+    public Integer changeRuleStatus(TbCrawlRule tbCrawlRule) {
+        return tbCrawlRuleMapper.updateByPrimaryKeySelective(tbCrawlRule);
+    }
 
+    @Override
+    public Integer countCollect(String startTime) {
+        return vTbMapper.countCollect(startTime);
+    }
+
+    @Override
+    public Integer batchInsertFile(List<TbCrawlFile> tbCrawlFiles) {
+        return vTbMapper.batchInsertFile(tbCrawlFiles);
+    }
+
+    @Override
+    public List<TbCrawlFile> urlFile(String url) {
+        TbCrawlFileExample tbCrawlFileExample = new TbCrawlFileExample();
+        tbCrawlFileExample.createCriteria().andStartUrlEqualTo(url);
+        return tbCrawlFileMapper.selectByExample(tbCrawlFileExample);
+    }
+
+    @Override
+    public TbCrawlFile getFileById(Integer id) {
+        return tbCrawlFileMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void deleteExpireData() {
+        List<TbCrawlDict> expireParaList = getDictByKey(ExpireData.DICT_EXPIRE_DAY_KEY);
+        if (CollectionUtils.isEmpty(expireParaList)){
+            return;
+        }
+        TbCrawlDict expirePara = expireParaList.parallelStream().findFirst().get();
+        if (StringUtils.isEmpty(expirePara.getdValue()) || !CommonUtil.isNumber(expirePara.getdValue())){
+            return;
+        }
+        Integer expireDay = Integer.parseInt(expirePara.getdValue());
+        List<TbCrawlFile> tbCrawlFiles = vTbMapper.selectExpireFile(expireDay);
+        if (CollectionUtils.isEmpty(tbCrawlFiles)){
+            return;
+        }
+        //先删除过期附件
+        try {
+            for (TbCrawlFile file : tbCrawlFiles){
+                CommonUtil.delFile(Constant.FILE_PATH, file.getFileMd5());
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return;
+        }
+        //删除数据库记录
+        vTbMapper.deleteExpireContent(expireDay);
+        vTbMapper.deleteExpireUrl(expireDay);
+        vTbMapper.deleteExpireFile(expireDay);
+    }
+
+    @Override
+    public TbCrawlFile queryFileByUrl(String fileUrl) {
+        return vTbMapper.queryFileByUrl(fileUrl);
+    }
+
+    @Override
+    public List<TbCrawlRule> getCrawRuleByChannel(String channel) {
+        TbCrawlRuleExample tbCrawlRuleExample= new TbCrawlRuleExample();
+        tbCrawlRuleExample.createCriteria().andChannelEqualTo(channel);
+        return tbCrawlRuleMapper.selectByExample(tbCrawlRuleExample);
+    }
 }

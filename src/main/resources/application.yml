@@ -37,6 +37,17 @@ spring:
         enabled: true
   thymeleaf:
     prefix: classpath:/public/thymeleaf/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+    cache: false
+
+  # 静态文件请求匹配方式
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/,classpath:/public/
 
   mail:
     host: smtp.qq.com

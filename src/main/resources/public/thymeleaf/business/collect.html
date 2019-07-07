@@ -4,7 +4,7 @@
     <div th:replace="head"></div>
     <!-- DataTables -->
     <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css"/>
-    <title>邮件提醒</title>
+    <title>手动抓取</title>
 </head>
 <script type="text/javascript">
 
@@ -33,36 +33,33 @@
                         <!-- form start -->
                         <form class="form-horizontal" th:action="@{${api}}" method="post">
                             <div class="box-body">
-                                <input type="hidden" name="emailId" th:value="${email}?${email.getId()}"/>
-                                <input type="hidden" name="cronId" th:value="${cron}?${cron.getId()}"/>
-                                <input type="hidden" name="noEmailId" th:value="${noEmail}?${noEmail.getId()}"/>
+
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2 control-label">邮件地址(多个用,分隔):</label>
+                                    <label for="channel" class="col-sm-2 control-label">渠道:</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" name="emails" th:value="${email}?${email.getdValue()}"
-                                               class="form-control" id="inputEmail3" placeholder=""
-                                               required="required"/>
+                                        <select class="form-control" id="channel" name="channel" required="required">
+                                            <option value=""> 请选择渠道 </option>
+                                            <option th:each="item : ${list}"
+                                                    th:value="${item.channel}"
+                                                    th:utext="${item.channel}"/>
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2 control-label">周期内无新消息是否发送邮件(是/否):</label>
+                                    <label  class="col-sm-2 control-label">关键字过滤:</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" name="noEmail" th:value="${noEmail}?${noEmail.getdValue()}"
-                                               class="form-control" id="inputEmail3" placeholder=""
-                                               required="required" maxlength="30"/>
+                                        <input type="text" name="keyword" class="form-control" id="keyword" placeholder="" required="required"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2 control-label">发送邮件周期(cron表达式):</label>
+                                    <label for="inputEmail3" class="col-sm-2 control-label">接收邮箱(多个用,分隔):</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" name="cron" th:value="${cron}?${cron.getdValue()}"
-                                               class="form-control" id="inputEmail3" placeholder=""
-                                               required="required" maxlength="30"/>
+                                        <input type="text" name="emails" class="form-control" id="inputEmail3" placeholder="" required="required"/>
                                     </div>
                                 </div>
 
@@ -90,6 +87,8 @@
 </div>
 
 <div th:replace="script"></div>
+
+<!-- page script -->
 
 </body>
 </html>

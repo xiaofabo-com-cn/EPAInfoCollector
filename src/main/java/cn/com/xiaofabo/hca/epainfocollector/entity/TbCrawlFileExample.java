@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TbCrawlContentExample {
+public class TbCrawlFileExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TbCrawlContentExample() {
+    public TbCrawlFileExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -235,73 +235,213 @@ public class TbCrawlContentExample {
             return (Criteria) this;
         }
 
-        public Criteria andTitleIsNull() {
-            addCriterion("title is null");
+        public Criteria andFileNameIsNull() {
+            addCriterion("file_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andTitleIsNotNull() {
-            addCriterion("title is not null");
+        public Criteria andFileNameIsNotNull() {
+            addCriterion("file_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTitleEqualTo(String value) {
-            addCriterion("title =", value, "title");
+        public Criteria andFileNameEqualTo(String value) {
+            addCriterion("file_name =", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotEqualTo(String value) {
-            addCriterion("title <>", value, "title");
+        public Criteria andFileNameNotEqualTo(String value) {
+            addCriterion("file_name <>", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleGreaterThan(String value) {
-            addCriterion("title >", value, "title");
+        public Criteria andFileNameGreaterThan(String value) {
+            addCriterion("file_name >", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleGreaterThanOrEqualTo(String value) {
-            addCriterion("title >=", value, "title");
+        public Criteria andFileNameGreaterThanOrEqualTo(String value) {
+            addCriterion("file_name >=", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleLessThan(String value) {
-            addCriterion("title <", value, "title");
+        public Criteria andFileNameLessThan(String value) {
+            addCriterion("file_name <", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleLessThanOrEqualTo(String value) {
-            addCriterion("title <=", value, "title");
+        public Criteria andFileNameLessThanOrEqualTo(String value) {
+            addCriterion("file_name <=", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleLike(String value) {
-            addCriterion("title like", value, "title");
+        public Criteria andFileNameLike(String value) {
+            addCriterion("file_name like", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotLike(String value) {
-            addCriterion("title not like", value, "title");
+        public Criteria andFileNameNotLike(String value) {
+            addCriterion("file_name not like", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleIn(List<String> values) {
-            addCriterion("title in", values, "title");
+        public Criteria andFileNameIn(List<String> values) {
+            addCriterion("file_name in", values, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotIn(List<String> values) {
-            addCriterion("title not in", values, "title");
+        public Criteria andFileNameNotIn(List<String> values) {
+            addCriterion("file_name not in", values, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleBetween(String value1, String value2) {
-            addCriterion("title between", value1, value2, "title");
+        public Criteria andFileNameBetween(String value1, String value2) {
+            addCriterion("file_name between", value1, value2, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotBetween(String value1, String value2) {
-            addCriterion("title not between", value1, value2, "title");
+        public Criteria andFileNameNotBetween(String value1, String value2) {
+            addCriterion("file_name not between", value1, value2, "fileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5IsNull() {
+            addCriterion("file_md5 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5IsNotNull() {
+            addCriterion("file_md5 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5EqualTo(String value) {
+            addCriterion("file_md5 =", value, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5NotEqualTo(String value) {
+            addCriterion("file_md5 <>", value, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5GreaterThan(String value) {
+            addCriterion("file_md5 >", value, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5GreaterThanOrEqualTo(String value) {
+            addCriterion("file_md5 >=", value, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5LessThan(String value) {
+            addCriterion("file_md5 <", value, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5LessThanOrEqualTo(String value) {
+            addCriterion("file_md5 <=", value, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5Like(String value) {
+            addCriterion("file_md5 like", value, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5NotLike(String value) {
+            addCriterion("file_md5 not like", value, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5In(List<String> values) {
+            addCriterion("file_md5 in", values, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5NotIn(List<String> values) {
+            addCriterion("file_md5 not in", values, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5Between(String value1, String value2) {
+            addCriterion("file_md5 between", value1, value2, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileMd5NotBetween(String value1, String value2) {
+            addCriterion("file_md5 not between", value1, value2, "fileMd5");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlIsNull() {
+            addCriterion("file_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlIsNotNull() {
+            addCriterion("file_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlEqualTo(String value) {
+            addCriterion("file_url =", value, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlNotEqualTo(String value) {
+            addCriterion("file_url <>", value, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlGreaterThan(String value) {
+            addCriterion("file_url >", value, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("file_url >=", value, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlLessThan(String value) {
+            addCriterion("file_url <", value, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlLessThanOrEqualTo(String value) {
+            addCriterion("file_url <=", value, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlLike(String value) {
+            addCriterion("file_url like", value, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlNotLike(String value) {
+            addCriterion("file_url not like", value, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlIn(List<String> values) {
+            addCriterion("file_url in", values, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlNotIn(List<String> values) {
+            addCriterion("file_url not in", values, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlBetween(String value1, String value2) {
+            addCriterion("file_url between", value1, value2, "fileUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileUrlNotBetween(String value1, String value2) {
+            addCriterion("file_url not between", value1, value2, "fileUrl");
             return (Criteria) this;
         }
 

@@ -4,7 +4,7 @@
     <div th:replace="head"></div>
     <!-- DataTables -->
     <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css"/>
-    <title>邮件提醒</title>
+    <title>周期设置</title>
 </head>
 <script type="text/javascript">
 
@@ -27,42 +27,20 @@
                     <!-- Horizontal Form -->
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">邮件提醒设置</h3>
+                            <h3 class="box-title">爬虫周期设置</h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
                         <form class="form-horizontal" th:action="@{${api}}" method="post">
                             <div class="box-body">
-                                <input type="hidden" name="emailId" th:value="${email}?${email.getId()}"/>
-                                <input type="hidden" name="cronId" th:value="${cron}?${cron.getId()}"/>
-                                <input type="hidden" name="noEmailId" th:value="${noEmail}?${noEmail.getId()}"/>
+                                <input type="hidden" name="taskId" th:value="${crawTask}?${crawTask.getId()}"/>
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2 control-label">邮件地址(多个用,分隔):</label>
+                                    <label for="inputEmail3" class="col-sm-2 control-label">爬虫周期(cron表达式):</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" name="emails" th:value="${email}?${email.getdValue()}"
+                                        <input type="text" name="cron" th:value="${crawTask}?${crawTask.getdValue()}"
                                                class="form-control" id="inputEmail3" placeholder=""
                                                required="required"/>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2 control-label">周期内无新消息是否发送邮件(是/否):</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="text" name="noEmail" th:value="${noEmail}?${noEmail.getdValue()}"
-                                               class="form-control" id="inputEmail3" placeholder=""
-                                               required="required" maxlength="30"/>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2 control-label">发送邮件周期(cron表达式):</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="text" name="cron" th:value="${cron}?${cron.getdValue()}"
-                                               class="form-control" id="inputEmail3" placeholder=""
-                                               required="required" maxlength="30"/>
                                     </div>
                                 </div>
 

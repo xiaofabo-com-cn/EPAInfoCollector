@@ -2,18 +2,20 @@ package cn.com.xiaofabo.hca.epainfocollector.entity;
 
 import java.util.Date;
 
-public class TbCrawlContent {
+public class TbCrawlFile {
     private Integer id;
 
     private String startUrl;
 
-    private String title;
+    private String fileName;
+
+    private String fileMd5;
+
+    private String fileUrl;
 
     private Date createTime;
 
     private Date updateTime;
-
-    private byte[] bodyContent;
 
     public Integer getId() {
         return id;
@@ -31,12 +33,28 @@ public class TbCrawlContent {
         this.startUrl = startUrl;
     }
 
-    public String getTitle() {
-        return title;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileMd5() {
+        return fileMd5;
+    }
+
+    public void setFileMd5(String fileMd5) {
+        this.fileMd5 = fileMd5;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 
     public Date getCreateTime() {
@@ -53,13 +71,5 @@ public class TbCrawlContent {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public byte[] getBodyContent() {
-        return bodyContent;
-    }
-
-    public void setBodyContent(byte[] bodyContent) {
-        this.bodyContent = bodyContent;
     }
 }

@@ -4,10 +4,17 @@
     <div th:replace="head"></div>
     <!-- DataTables -->
     <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css"/>
-    <title>数据列表</title>
+    <title>爬虫规则</title>
 </head>
 <script type="text/javascript">
-
+	function check(){
+		var r=confirm("确定要删除吗？");
+		if (r==true){
+			return true;
+		}else{
+			return false;
+		}
+	}
 </script>
 
 <body class="hold-transition skin-blue sidebar-mini ">
@@ -27,22 +34,30 @@
 
                     <div class="box">
                         <div class="box-header">
-                            <h2 align="center" th:utext="${title}">title</h2>
+                            <h3 class="box-title">爬虫规则设置</h3>
                         </div>
 
                         <div class="box-body">
-                            <p th:utext="${detail}">content</p>
-                        </div>
-
-                        <div class="box-footer">
-                            <!--<table id="fileTable" class="table table-bordered table-striped">
+                            <table id="dataTable" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>渠道</th>
+                                    <th>轮询状态</th>
+                                    <th style="text-align: center">切换状态</th>
+                                </tr>
+                                </thead>
                                 <tbody>
-                                <tr th:each="item:${fileList}">
-                                    <a th:text="${item.fileName}" th:href="@{/business/{id}/download(id=${item.id})}"></a>
-                                    <br />
+                                <tr th:each="item:${list}">
+                                    <td th:text="${item.channel}"></td>
+                                    <td th:text="${item.isDelete == 1}?'停用':'启用'" id="isDelete">isDelete</td>
+                                    <td style="text-align: center">
+                                        <span name="lock" title="切换状态"
+                                              th:data="@{/business/setting/rule/{id}/status(isDelete=${item.isDelete==1?0:1},id=${item.id})}"
+                                              style="cursor: pointer" class="glyphicon glyphicon-lock"></span>
+                                    </td>
                                 </tr>
                                 </tbody>
-                            </table>-->
+                            </table>
                         </div>
                         <!-- /.box-body -->
                     </div>

@@ -74,7 +74,7 @@ public class UserRepositoryJdbc implements UserRepository {
 
     @Override
     public boolean hasResourcePermission(String uid,String resourceCode) {
-        return jdbcTemplate.query("select count(*) from tb_crawl_user_role ur join role_resource rr on ur.role_id=rr.role_id where ur.uid=? and rr.resource_id=?",rs -> rs.getInt(0)>0,uid,resourceCode);
+        return jdbcTemplate.query("select count(*) from tb_crawl_user_role ur join tb_crawl_role_resource rr on ur.role_id=rr.role_id where ur.uid=? and rr.resource_id=?",rs -> rs.getInt(0)>0,uid,resourceCode);
     }
 
 
