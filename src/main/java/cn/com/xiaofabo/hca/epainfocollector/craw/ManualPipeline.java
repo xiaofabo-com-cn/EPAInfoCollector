@@ -75,8 +75,9 @@ public class ManualPipeline extends JsonPipeline {
                 }
             }
             LocalCache.push(key, tbUrls);
-            if (!CollectionUtils.isEmpty(tbUrls)){
-                mailService.sendHtmlMail(emails.split(","), "环境局信息收集系统邮件通知", "/mailTemplate", tbUrls);
+            if (!CollectionUtils.isEmpty(tbUrls) && LocalCache.get(key) != null){
+                mailService.sendHtmlMail(emails.split(","), "环境局信息收集系统邮件通知", "mailTemplate", tbUrls);
+                LocalCache.remove(key);
             }
         }
     }

@@ -2,6 +2,13 @@ package cn.com.xiaofabo.hca.epainfocollector.utils;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -123,6 +130,30 @@ public class CommonUtil {
         return "0000-00-00";
     }
 
+    public static String getHttpResult(String url) {
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpGet httpget = new HttpGet(url);
+        String json = null;
+        try {
+            HttpResponse response = httpclient.execute(httpget);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                json = EntityUtils.toString(entity, "UTF-8").trim();
+
+            }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            httpget.abort();
+        }
+        return json;
+    }
+
+    public static int unAbs(Integer a) {
+        return (a > 0) ? -a : a;
+    }
 
     public static void main(String[] args) {
         Pattern pattern = Pattern.compile("[0-9]{4}[-][0-9]{1,2}[-][0-9]{1,2}");

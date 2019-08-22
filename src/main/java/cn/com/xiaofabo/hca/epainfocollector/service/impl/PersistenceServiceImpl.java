@@ -55,10 +55,10 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
 
     @Override
-    public TbCrawlContent urlDetail(String url) {
+    public TbCrawlContentWithBLOBs urlDetail(String url) {
         TbCrawlContentExample tbCrawlContentExample = new TbCrawlContentExample();
         tbCrawlContentExample.createCriteria().andStartUrlEqualTo(url);
-        List<TbCrawlContent> tbCrawlContentList = tbCrawlContentMapper.selectByExampleWithBLOBs(tbCrawlContentExample);
+        List<TbCrawlContentWithBLOBs> tbCrawlContentList = tbCrawlContentMapper.selectByExampleWithBLOBs(tbCrawlContentExample);
         if (CollectionUtils.isEmpty(tbCrawlContentList)){
             return null;
         }

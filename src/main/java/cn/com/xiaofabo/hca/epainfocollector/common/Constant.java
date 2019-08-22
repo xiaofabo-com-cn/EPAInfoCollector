@@ -8,7 +8,7 @@ public class Constant {
     public static Integer DELETE_NO = 0;
     public static Integer DELETE_YES = 1;
 
-    public static final String FILE_PATH = "D:\\file\\";
+    public static final String FILE_PATH = "D:\\Crawler\\crawler\\data\\";
 
     public static final String YES = "是";
 

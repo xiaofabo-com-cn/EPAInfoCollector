@@ -4,11 +4,11 @@
   <resultMap id="BaseResultMap" type="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="start_url" jdbcType="VARCHAR" property="startUrl" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContentWithBLOBs">
+    <result column="title" jdbcType="LONGVARBINARY" property="title" />
     <result column="body_content" jdbcType="LONGVARBINARY" property="bodyContent" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -70,10 +70,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, start_url, title, create_time, update_time
+    id, start_url, create_time, update_time
   </sql>
   <sql id="Blob_Column_List">
-    body_content
+    title, body_content
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContentExample" resultMap="ResultMapWithBLOBs">
     select
@@ -123,15 +123,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent">
-    insert into tb_crawl_content (id, start_url, title, 
-      create_time, update_time, body_content
+  <insert id="insert" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContentWithBLOBs">
+    insert into tb_crawl_content (id, start_url, create_time, 
+      update_time, title, body_content
       )
-    values (#{id,jdbcType=INTEGER}, #{startUrl,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{bodyContent,jdbcType=LONGVARBINARY}
+    values (#{id,jdbcType=INTEGER}, #{startUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{title,jdbcType=LONGVARBINARY}, #{bodyContent,jdbcType=LONGVARBINARY}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent">
+  <insert id="insertSelective" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContentWithBLOBs">
     insert into tb_crawl_content
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -140,14 +140,14 @@
       <if test="startUrl != null">
         start_url,
       </if>
-      <if test="title != null">
-        title,
-      </if>
       <if test="createTime != null">
         create_time,
       </if>
       <if test="updateTime != null">
         update_time,
+      </if>
+      <if test="title != null">
+        title,
       </if>
       <if test="bodyContent != null">
         body_content,
@@ -160,14 +160,14 @@
       <if test="startUrl != null">
         #{startUrl,jdbcType=VARCHAR},
       </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=LONGVARBINARY},
       </if>
       <if test="bodyContent != null">
         #{bodyContent,jdbcType=LONGVARBINARY},
@@ -189,14 +189,14 @@
       <if test="record.startUrl != null">
         start_url = #{record.startUrl,jdbcType=VARCHAR},
       </if>
-      <if test="record.title != null">
-        title = #{record.title,jdbcType=VARCHAR},
-      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=LONGVARBINARY},
       </if>
       <if test="record.bodyContent != null">
         body_content = #{record.bodyContent,jdbcType=LONGVARBINARY},
@@ -210,9 +210,9 @@
     update tb_crawl_content
     set id = #{record.id,jdbcType=INTEGER},
       start_url = #{record.startUrl,jdbcType=VARCHAR},
-      title = #{record.title,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      title = #{record.title,jdbcType=LONGVARBINARY},
       body_content = #{record.bodyContent,jdbcType=LONGVARBINARY}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -222,21 +222,17 @@
     update tb_crawl_content
     set id = #{record.id,jdbcType=INTEGER},
       start_url = #{record.startUrl,jdbcType=VARCHAR},
-      title = #{record.title,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContentWithBLOBs">
     update tb_crawl_content
     <set>
       <if test="startUrl != null">
         start_url = #{startUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -244,25 +240,27 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="title != null">
+        title = #{title,jdbcType=LONGVARBINARY},
+      </if>
       <if test="bodyContent != null">
         body_content = #{bodyContent,jdbcType=LONGVARBINARY},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContentWithBLOBs">
     update tb_crawl_content
     set start_url = #{startUrl,jdbcType=VARCHAR},
-      title = #{title,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=LONGVARBINARY},
       body_content = #{bodyContent,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent">
     update tb_crawl_content
     set start_url = #{startUrl,jdbcType=VARCHAR},
-      title = #{title,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

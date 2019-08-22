@@ -2,6 +2,7 @@ package cn.com.xiaofabo.hca.epainfocollector.mapper;
 
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent;
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContentExample;
+import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContentWithBLOBs;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,25 +13,25 @@ public interface TbCrawlContentMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(TbCrawlContent record);
+    int insert(TbCrawlContentWithBLOBs record);
 
-    int insertSelective(TbCrawlContent record);
+    int insertSelective(TbCrawlContentWithBLOBs record);
 
-    List<TbCrawlContent> selectByExampleWithBLOBs(TbCrawlContentExample example);
+    List<TbCrawlContentWithBLOBs> selectByExampleWithBLOBs(TbCrawlContentExample example);
 
     List<TbCrawlContent> selectByExample(TbCrawlContentExample example);
 
-    TbCrawlContent selectByPrimaryKey(Integer id);
+    TbCrawlContentWithBLOBs selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") TbCrawlContent record, @Param("example") TbCrawlContentExample example);
+    int updateByExampleSelective(@Param("record") TbCrawlContentWithBLOBs record, @Param("example") TbCrawlContentExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") TbCrawlContent record, @Param("example") TbCrawlContentExample example);
+    int updateByExampleWithBLOBs(@Param("record") TbCrawlContentWithBLOBs record, @Param("example") TbCrawlContentExample example);
 
     int updateByExample(@Param("record") TbCrawlContent record, @Param("example") TbCrawlContentExample example);
 
-    int updateByPrimaryKeySelective(TbCrawlContent record);
+    int updateByPrimaryKeySelective(TbCrawlContentWithBLOBs record);
 
-    int updateByPrimaryKeyWithBLOBs(TbCrawlContent record);
+    int updateByPrimaryKeyWithBLOBs(TbCrawlContentWithBLOBs record);
 
     int updateByPrimaryKey(TbCrawlContent record);
 }

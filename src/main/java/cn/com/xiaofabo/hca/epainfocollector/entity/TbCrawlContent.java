@@ -7,13 +7,9 @@ public class TbCrawlContent {
 
     private String startUrl;
 
-    private String title;
-
     private Date createTime;
 
     private Date updateTime;
-
-    private byte[] bodyContent;
 
     public Integer getId() {
         return id;
@@ -31,14 +27,6 @@ public class TbCrawlContent {
         this.startUrl = startUrl;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -53,13 +41,5 @@ public class TbCrawlContent {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public byte[] getBodyContent() {
-        return bodyContent;
-    }
-
-    public void setBodyContent(byte[] bodyContent) {
-        this.bodyContent = bodyContent;
     }
 }

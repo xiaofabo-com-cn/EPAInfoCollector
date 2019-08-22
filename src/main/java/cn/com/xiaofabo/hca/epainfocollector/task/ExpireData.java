@@ -3,7 +3,10 @@ package cn.com.xiaofabo.hca.epainfocollector.task;
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlDict;
 import cn.com.xiaofabo.hca.epainfocollector.mail.MailService;
 import cn.com.xiaofabo.hca.epainfocollector.service.PersistenceService;
+import cn.com.xiaofabo.hca.epainfocollector.utils.CommonUtil;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.TriggerContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -12,7 +15,9 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +34,9 @@ public class ExpireData implements SchedulingConfigurer {
 	@Autowired
 	PersistenceService persistenceService;
 
+	@Value("${custom.expire}")
+	private String deleteExpireDataUrl;
+
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
 		//项目部署时，会在这里执行一次，从数据库拿到cron表达式
@@ -42,7 +50,8 @@ public class ExpireData implements SchedulingConfigurer {
 			@Override
 			public void run() {
 				//任务逻辑代码部分.
-				persistenceService.deleteExpireData();
+				//persistenceService.deleteExpireData();
+				deleteExpireDateByES();
 			}
 		};
 		Trigger trigger = new Trigger() {
@@ -61,6 +70,22 @@ public class ExpireData implements SchedulingConfigurer {
 		};
 		taskRegistrar.addTriggerTask(task, trigger);
 	}
+
+	private void deleteExpireDateByES(){
+		List<TbCrawlDict> expireParaList = persistenceService.getDictByKey(ExpireData.DICT_EXPIRE_DAY_KEY);
+		if (CollectionUtils.isEmpty(expireParaList)){
+			return;
+		}
+		TbCrawlDict expirePara = expireParaList.parallelStream().findFirst().get();
+		if (StringUtils.isEmpty(expirePara.getdValue()) || !CommonUtil.isNumber(expirePara.getdValue())){
+			return;
+		}
+		Integer expireDay = Integer.parseInt(expirePara.getdValue());
+		String startTime = new SimpleDateFormat("yyyy-MM-dd").format(DateUtils.addDays(new Date(),
+				CommonUtil.unAbs(expireDay)));
+		CommonUtil.getHttpResult(deleteExpireDataUrl + startTime);
+	}
+
 
 }
 

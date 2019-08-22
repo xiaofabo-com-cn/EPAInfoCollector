@@ -16,7 +16,7 @@ public interface PersistenceService {
 
     List<CrawlUrlResp> urlList(CrawlUrlReq crawlUrlReq);
 
-    TbCrawlContent urlDetail(String url);
+    TbCrawlContentWithBLOBs urlDetail(String url);
 
     TbCrawlUrl getUrlById(Integer id);
 

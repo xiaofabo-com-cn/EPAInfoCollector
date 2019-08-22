@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -45,16 +46,21 @@ public class BusinessController {
     public String detail(Model model, @PathVariable("id") Integer id){
         TbCrawlUrl tbCrawlUrl = persistenceService.getUrlById(id);
         if (tbCrawlUrl != null){
-            TbCrawlContent tbCrawlContent = persistenceService.urlDetail(tbCrawlUrl.getUrl());
+            TbCrawlContentWithBLOBs tbCrawlContent = persistenceService.urlDetail(tbCrawlUrl.getUrl());
             List<TbCrawlFile> fileList = persistenceService.urlFile(tbCrawlUrl.getUrl());
             if (tbCrawlContent != null){
                 try {
-                    String detail = new String(tbCrawlContent.getBodyContent(),"UTF-8");
+                    String detail = new String(tbCrawlContent.getBodyContent());
+                    if (!StringUtils.isEmpty(detail)){
+                        detail = detail.replaceAll("<a href=\"/","<a href=\"/download/");
+                    }
                     model.addAttribute("detail", detail);
-                } catch (UnsupportedEncodingException e) {
+                    String title = new String(tbCrawlContent.getTitle());
+                    model.addAttribute("title", title);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                model.addAttribute("title", tbCrawlContent.getTitle());
+
             } else {
                 TbCrawlFile file = persistenceService.queryFileByUrl(tbCrawlUrl.getUrl());
                 if (file != null){

@@ -25,9 +25,10 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping("/**/{fileName}.{fileSuffix}")
-    public String download(@PathVariable("fileName")String fileName, @PathVariable("fileSuffix")String fileSuffix, HttpServletRequest request) {
-        TbCrawlFile tbCrawlFile = persistenceService.queryFileByUrl(request.getServletPath());
+    @RequestMapping("/download/**/{fileName}.{fileSuffix}")
+    public String download(@PathVariable("fileName")String fileName,
+                           @PathVariable("fileSuffix")String fileSuffix, HttpServletRequest request) {
+        TbCrawlFile tbCrawlFile = persistenceService.queryFileByUrl(request.getServletPath().replace("/download",""));
         if (tbCrawlFile != null){
             return "redirect:/business/"+tbCrawlFile.getId()+"/download";
         }

@@ -20,9 +20,12 @@ spring:
   application:
     name: admin
   datasource:
-    url: jdbc:mysql://10.0.3.10:3306/test?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
-    username: kai1818
-    password: ibm@touna.cn#123.ck&
+#    url: jdbc:mysql://10.0.3.10:3306/test?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+#    username: kai1818
+#    password: ibm@touna.cn#123.ck&
+    url: jdbc:mysql://localhost:3306/crawl?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
     driver-class-name: com.mysql.jdbc.Driver
   cache:
     guava:
@@ -52,5 +55,13 @@ spring:
   mail:
     host: smtp.qq.com
     username: 718586216@qq.com
-    password: xxxxxxxxxxxx
+    password: fkheojkixysvbdfc
     default-encoding: UTF-8
+
+mybatis:
+  mapper-locations: mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: cn.com.xiaofabo.hca.epainfocollector.mapper  # 注意：对应实体类的路径
+
+custom:
+  notify: http://localhost:8081/spider/commons/webpage/getCountByTime?startTime=
+  expire: http://localhost:8081/spider/commons/webpage/deleteByBeforeTime?time=

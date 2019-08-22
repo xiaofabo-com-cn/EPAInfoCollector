@@ -16,6 +16,10 @@ public class LocalCache {
 		localCacheMap.put(key, obj);
 	}
 
+	public static void remove(String key) {
+		localCacheMap.remove(key);
+	}
+
 	public static void push(String key, Object obj) {
 		Object o = localCacheMap.get(key);
 		if (o == null) {

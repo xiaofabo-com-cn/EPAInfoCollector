@@ -4,6 +4,7 @@ import cn.com.xiaofabo.hca.epainfocollector.common.Constant;
 import cn.com.xiaofabo.hca.epainfocollector.context.ApplicationContextProvider;
 import cn.com.xiaofabo.hca.epainfocollector.craw.entity.MyHrefBean;
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContent;
+import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlContentWithBLOBs;
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlFile;
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlUrl;
 import cn.com.xiaofabo.hca.epainfocollector.service.PersistenceService;
@@ -112,9 +113,9 @@ public class HrefPipeline extends JsonPipeline {
         }
 
         if (!StringUtils.isEmpty(bodyContent)){
-            TbCrawlContent tbCrawlContent = new TbCrawlContent();
+            TbCrawlContentWithBLOBs tbCrawlContent = new TbCrawlContentWithBLOBs();
             tbCrawlContent.setStartUrl(currRequest.getUrl());
-            tbCrawlContent.setTitle(title);
+            tbCrawlContent.setTitle(title.getBytes());
             tbCrawlContent.setBodyContent(bodyContent.getBytes());
 
             executor.execute(()->{

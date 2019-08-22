@@ -1,5 +1,6 @@
 package cn.com.xiaofabo.hca.epainfocollector.mail;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -11,9 +12,13 @@ import javax.mail.internet.MimeMessage;
 import cn.com.xiaofabo.hca.epainfocollector.common.Constant;
 import cn.com.xiaofabo.hca.epainfocollector.entity.TbCrawlDict;
 import cn.com.xiaofabo.hca.epainfocollector.service.PersistenceService;
+import cn.com.xiaofabo.hca.epainfocollector.utils.CommonUtil;
+import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -48,6 +53,9 @@ public class MailService {
 
 	@Autowired
 	PersistenceService persistenceService;
+
+	@Value("${custom.notify}")
+	private String getDataCountUrl;
 
 	public void sendHtmlMail(String[] tos, String subject, String htmlName, Object content) {
 		MimeMessage message = mailSender.createMimeMessage();
@@ -92,7 +100,8 @@ public class MailService {
 			}
 		}
 
-		Integer count = persistenceService.countCollect(startTime);
+		//Integer count = persistenceService.countCollect(startTime);
+		Integer count = getCountByES(startTime);
 
 		List<TbCrawlDict> mailDicts = persistenceService.getDictByKey(DICT_MAIL_KEY);
 		if (CollectionUtils.isEmpty(mailDicts)){
@@ -125,6 +134,11 @@ public class MailService {
 				sendSimpleEmail(tos, "环境局信息收集系统邮件通知", "无新消息!");
 			}
 		}
+	}
+
+	public Integer getCountByES(String startTime) {
+		String json = CommonUtil.getHttpResult(getDataCountUrl + startTime.split(" ")[0]);
+		return JSON.parseObject(json).getInteger("result");
 	}
 
 	public static void main(String[] args){

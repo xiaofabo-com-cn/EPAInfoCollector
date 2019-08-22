@@ -42,7 +42,7 @@ public class CrawEngine implements SchedulingConfigurer {
 			@Override
 			public void run() {
 				//任务逻辑代码部分.
-				crawService.runTask();
+				//crawService.runTask();
 			}
 		};
 		Trigger trigger = new Trigger() {
