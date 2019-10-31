@@ -18,8 +18,8 @@
         </commentGenerator>
 
         <!-- !!!! Database Configurations !!!! -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.0.3.10:3306/test" userId="kai1818"
-                        password="ibm@touna.cn#123.ck&amp;"/>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/test" userId="xxx"
+                        password="xxx"/>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
